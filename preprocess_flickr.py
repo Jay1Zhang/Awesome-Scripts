@@ -34,7 +34,7 @@ def gen_flickr_csv():
 
     
 
-def _loas_mask(path, name):
+def loas_mask(path, name):
     # Learning to Localize Sound Source in Visual Scenes原文中抽取gt_map的方式
     gt = ET.parse(f'{path}{name}.xml').getroot()
     gt_map = np.zeros([224,224])
@@ -71,7 +71,7 @@ def gen_masks():
         print(len(file_list))
 
     for filename in file_list:
-        mask = _loas_mask(anno_path, filename)
+        mask = loas_mask(anno_path, filename)
         cv2.imwrite(f'{mask_path}{filename}.png', mask * 255)
 
 

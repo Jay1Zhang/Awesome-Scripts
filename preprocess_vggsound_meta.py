@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from petrel_client.client import Client
@@ -90,7 +91,23 @@ def clean_meta(input_path, output_path):
     df.to_csv(output_path, index=False)
     
 
+def random_samples(meta_path, sample_num='10k'):
+    meta = pd.read_csv(meta_path)
+    meta = meta[meta['split'] == 'train']
+    print(meta.head())
+    # random sampling
+    np.random.seed(10)
+    if sample_num == '10k':
+        sample_meta = meta.sample(10000)
+    elif sample_num == '144k':
+        sample_meta = meta.sample(144000)
+
+    sample_meta.reset_index(drop=True, inplace=True)
+    sample_meta.to_csv(f'./temp/vggsound_{sample_num}.csv', index=False)
+
+
+
 if __name__ == '__main__':
     
-    clean_meta('./temp/meta.csv', './temp/meta_clean.csv')
-    
+    #clean_meta('./temp/meta.csv', './temp/meta_clean.csv')
+    random_samples('./temp/meta_clean.csv', '144k')
