@@ -98,7 +98,7 @@ def random_samples(meta_path, sample_num='10k'):
     # random sampling
     np.random.seed(10)
     if sample_num == '10k':
-        sample_meta = meta.sample(10000)
+        sample_meta = meta.sample(10000)    # 默认replace=False，即不放回抽样
     elif sample_num == '144k':
         sample_meta = meta.sample(144000)
 

@@ -30,6 +30,7 @@ def gen_vggss_csv():
         video_list.append({
             'filename': filename,
             'category': category,
+            'split': 'test',
             'audio_path': f'audio_wav/{filename}.wav',
             'image_path': f'inter_frame/{filename}.png',
             'mask_path': f'masks/{filename}.png',
