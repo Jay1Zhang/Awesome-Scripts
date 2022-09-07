@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import xml.etree.ElementTree as ET
 
-root_path = '/mnt/lustre/zhangjiayi/research/audio-visual/datasets/Flickr-SoundNet/'
+root_path = '/mnt/lustre/zhangjiayi/research/audio-visual/datasets/flickr_soundnet/'
 
 def gen_flickr_csv():
     anno_path = root_path + 'Annotations/'
@@ -17,7 +17,7 @@ def gen_flickr_csv():
     df_all = pd.DataFrame(data_list, columns=['name'])
     df_all['split'] = 'train'
     # read test data
-    df_test = pd.read_csv(root_path + 'flickr_test.csv', header=None)
+    df_test = pd.read_csv(root_path + 'flickr_test250.csv', header=None)
     df_test['name'] = df_test[0].apply(lambda x: str(x))    # int -> str
     # map test in all data
     #df_all['test'] = df_all['name'].map(lambda x: x in df_test['name'])    # bug here
@@ -30,7 +30,7 @@ def gen_flickr_csv():
     df_all['image_path'] = df_all['name'].map(lambda x: f'Data/{x}.jpg')
     df_all['mask_path'] = df_all['name'].map(lambda x: f'Masks/{x}.png')
 
-    df_all[['name', 'split', 'audio_path', 'image_path', 'mask_path']].to_csv(root_path + 'flickr.csv', sep=',', index=False)
+    df_all[['name', 'split', 'audio_path', 'image_path', 'mask_path']].to_csv(root_path + 'flickr250.csv', sep=',', index=False)
 
     
 
