@@ -2,11 +2,13 @@ import os
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-from petrel_client.client import Client
+from collections import Counter
+
+#from petrel_client.client import Client
 
 
-conf_path = '~/petreloss.conf'
-S3Client = Client(conf_path)
+# conf_path = '~/petreloss.conf'
+# S3Client = Client(conf_path)
 
 
 def get_data_set(url):
@@ -106,8 +108,28 @@ def random_samples(meta_path, sample_num='10k'):
     sample_meta.to_csv(f'./temp/vggsound_{sample_num}.csv', index=False)
 
 
+def perfect_samples(meta_path, sample_num='10k'):
+    meta = pd.read_csv(meta_path)
+
+    candidate_samples_dict = {}
+    categories = list(meta['category'].unique())
+    #categories = random.shuffle(categories)
+    for c in categories:
+        candidate_samples_dict[c] = meta[meta['category'] == c].sample(n=80)
+
+    ideal_sample_list = []
+    for i in range(80):
+        for c in categories:
+            ideal_sample_list.append(candidate_samples_dict[c].iloc[i])
+           
+    meta_ideal = pd.DataFrame(data=ideal_sample_list, columns=meta.columns)
+    meta_ideal = meta_ideal[:10000]
+    meta_ideal.reset_index(drop=True, inplace=True)
+    meta_ideal.to_csv(f'./temp/vggsound_{sample_num}_ideal.csv', index=False)
+
 
 if __name__ == '__main__':
     
     #clean_meta('./temp/meta.csv', './temp/meta_clean.csv')
-    random_samples('./temp/meta_clean.csv', '144k')
+    #random_samples('./temp/meta_clean.csv', '10k')
+    perfect_samples('./temp/vggsound_144k.csv', sample_num='10k')
